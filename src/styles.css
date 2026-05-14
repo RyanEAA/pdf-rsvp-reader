@@ -60,6 +60,20 @@ body {
   font-weight: bold;
 }
 
+.rsvp-word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.08em;
+}
+
+.rsvp-letter {
+  display: inline;
+}
+
+.rsvp-letter.is-middle {
+  color: #e53935;
+}
+
 .pdf-viewer {
   position: relative;
   z-index: 1;
@@ -94,13 +108,23 @@ body {
   backdrop-filter: blur(10px) saturate(1.05);
 }
 
-.stage.is-focus .rsvp-display span {
+.stage.is-focus .rsvp-word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.08em;
   padding: 28px 42px;
   border-radius: 28px;
   background: rgba(16, 16, 18, 0.78);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.stage.is-focus .rsvp-letter {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
 }
 
 .stage.is-focus .pdf-viewer {
@@ -153,7 +177,7 @@ body {
     padding: 0 16px;
   }
 
-  .stage.is-focus .rsvp-display span {
+  .stage.is-focus .rsvp-word {
     padding: 20px 28px;
     border-radius: 22px;
   }
