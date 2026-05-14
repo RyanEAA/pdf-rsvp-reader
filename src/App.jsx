@@ -3,6 +3,7 @@ import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 import PDFViewer from "./components/PDFViewer";
+import Stage from "./components/Stage";
 import RSVPDisplay from "./components/RSVPDisplay";
 import { extractWordsFromPdf } from "./utils/pdfTextExtractor";
 
@@ -15,10 +16,9 @@ export default function App() {
   const [words, setWords] = useState([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isFocusMode, setIsFocusMode] = useState(false);
 
   const currentWord = words[currentWordIndex] ?? null;
-
-  console.log(currentWord);
 
   async function handleUpload(event) {
     const file = event.target.files[0];
@@ -28,6 +28,7 @@ export default function App() {
     setWords([]);
     setCurrentWordIndex(0);
     setIsPlaying(false);
+    setIsFocusMode(false);
 
     const buffer = await file.arrayBuffer();
     const loadingTask = pdfjsLib.getDocument({ data: buffer });
@@ -69,9 +70,17 @@ export default function App() {
         </button>
 
         <button
+          onClick={() => setIsFocusMode((value) => !value)}
+          disabled={words.length === 0}
+        >
+          {isFocusMode ? "Exit Focus" : "Focus"}
+        </button>
+
+        <button
           onClick={() => {
             setIsPlaying(false);
             setCurrentWordIndex(0);
+            setIsFocusMode(false);
           }}
           disabled={words.length === 0}
         >
@@ -85,10 +94,10 @@ export default function App() {
         </span>
       </section>
 
-      <RSVPDisplay word={currentWord} />
-      
-
-      <PDFViewer pdfDoc={pdfDoc} activeWord={currentWord} />
+        <Stage isFocusMode={isFocusMode}>
+          <RSVPDisplay word={currentWord} />
+          <PDFViewer pdfDoc={pdfDoc} activeWord={currentWord} />
+        </Stage>
     </main>
   );
 }
